@@ -10,8 +10,10 @@ class Table3Spider(scrapy.Spider):
     start_urls = [TABLE3_URL.format(z) for z in range(1, 93)]
 
     def parse(self, response):
+        # Retrieving the atomic number from the URL
+        z = int(response.url[-7:-5])
+
         pre = response.css('pre').extract_first()
         lines = pre.splitlines()
-        value = [[x for x in line[3:].split()] for line in lines[6:-1]]
-        key = response.url.split('/')[-1].split('.')[0]
-        yield {key: value}
+        table = [[x for x in line[3:].split()] for line in lines[6:-1]]
+        yield {z: table}
