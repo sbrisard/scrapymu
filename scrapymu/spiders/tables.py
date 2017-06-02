@@ -42,5 +42,6 @@ class Table3Spider(scrapy.Spider):
 
         pre = response.css('pre').extract_first()
         lines = pre.splitlines()
-        table = [[x for x in line[3:].split()] for line in lines[6:-1]]
-        yield {z: table}
+        all_rows = ([x for x in line[3:].split()] for line in lines[6:-1])
+        rows = [r for r in all_rows if r is not None and r != []]
+        yield {z: rows}
